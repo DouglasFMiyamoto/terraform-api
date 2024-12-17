@@ -40,7 +40,7 @@ module "eks" {
 }
 
 resource "aws_iam_role_policy_attachment" "alb_controller" {
-  role       = module.eks.iam_role_name
+  role       = module.eks.eks_cluster_iam_role_name
   policy_arn = "arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess"
 }
 
