@@ -15,21 +15,22 @@ module "vpc" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.0.0"
+  version = "19.0.0"  
 
   cluster_name    = "lanchonete-cluster"
   cluster_version = "1.27"
 
-  subnets         = module.vpc.public_subnets
   vpc_id          = module.vpc.vpc_id
+  subnet_ids      = module.vpc.private_subnets  # Mudamos de "subnets" para "subnet_ids"
 
   node_groups = {
     lanchonete-nodes = {
-      desired_capacity = 1
-      max_capacity     = 1
+      desired_capacity = 2
+      max_capacity     = 3
       min_capacity     = 1
 
-      instance_types = ["t3.micro"]
+      instance_type = "t3.small"  
+      key_name      = var.key_name 
     }
   }
 
