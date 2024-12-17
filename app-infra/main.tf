@@ -27,10 +27,10 @@ module "eks" {
   eks_managed_node_groups = {
     lanchonete-nodes = {
       desired_capacity = 2
-      max_capacity = 3
-      min_capacity = 1
-      instance_types = ["t3.small"]
-      key_name = var.key_name
+      max_capacity     = 3
+      min_capacity     = 1
+      instance_types   = ["t3.small"]
+      key_name         = var.key_name
     }
   }
 
@@ -40,7 +40,7 @@ module "eks" {
 }
 
 resource "aws_iam_role_policy_attachment" "alb_controller" {
-  role       = module.eks.eks_cluster_iam_role_name
+  role       = module.eks.cluster_iam_role_name  # Corrigido para acessar o atributo correto
   policy_arn = "arn:aws:iam::aws:policy/ElasticLoadBalancingFullAccess"
 }
 
