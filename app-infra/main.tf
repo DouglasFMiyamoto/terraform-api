@@ -11,7 +11,6 @@ module "vpc" {
 
   enable_nat_gateway = false
     Name = "app-vpc"
-  }
 }
 
 module "eks" {
