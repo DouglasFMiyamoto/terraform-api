@@ -1,5 +1,5 @@
 output "kubeconfig_command" {
-  value = "aws eks update-kubeconfig --region ${var.region} --name ${module.eks.cluster_name}"
+  value = "aws eks update-kubeconfig --region ${var.region} --name ${module.eks.cluster_id}"
 }
 
 output "vpc_id" {
