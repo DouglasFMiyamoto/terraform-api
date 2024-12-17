@@ -17,10 +17,13 @@ module "vpc" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
+  version = "18.21.0"
+
   cluster_name    = "lanchonete-cluster"
   cluster_version = "1.27"
   vpc_id          = module.vpc.vpc_id
-  subnets         = module.vpc.private_subnets  
+
+  subnets = module.vpc.private_subnets 
 
   node_groups = {
     lanchonete-nodes = {
