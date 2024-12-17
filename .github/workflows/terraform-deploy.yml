@@ -1,0 +1,56 @@
+name: Terraform EKS Infrastructure
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main  
+env:
+  AWS_REGION: us-east-1
+  TF_WORKING_DIR: ./app-infra
+
+jobs:
+  terraform:
+    name: "Provision Infrastructure with Terraform"
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          role-to-assume: arn:aws:iam::123456789012:role/github-actions-role # Substitua pelo ARN do IAM Role
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.5
+
+      - name: Terraform Init
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform init
+
+      - name: Terraform Validate
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform plan -input=false
+
+      - name: Terraform Apply
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform apply -auto-approve -input=false
+
+      - name: Terraform Outputs
+        working-directory: ${{ env.TF_WORKING_DIR }}
+        run: terraform output
